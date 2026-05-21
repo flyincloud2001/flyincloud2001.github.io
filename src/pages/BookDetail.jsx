@@ -110,9 +110,7 @@ export default function BookDetail() {
               {sec.subsection_title && (
                 <h4 style={subsectionTitleStyle}>{sec.subsection_title}</h4>
               )}
-              {sec.body && (
-                <p style={bodyText}>{sec.body}</p>
-              )}
+              {sec.body && <BodyParagraphs text={sec.body} />}
               {sec.quotes && (
                 <div style={{ marginTop: '1rem' }}>
                   <span style={inlineLabelStyle}>{t('notes', 'sectionQuotes')}</span>
@@ -186,6 +184,18 @@ export default function BookDetail() {
             </div>
           ))}
         </div>
+      )}
+    </div>
+  )
+}
+
+function BodyParagraphs({ text }) {
+  return (
+    <div style={{ marginTop: '0.3rem' }}>
+      {text.split('\n').map((line, i) =>
+        line.trim()
+          ? <p key={i} style={{ ...bodyText, textIndent: '2em', margin: '0 0 0.4rem' }}>{line}</p>
+          : <div key={i} style={{ height: '0.5em' }} />
       )}
     </div>
   )
