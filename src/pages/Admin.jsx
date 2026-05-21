@@ -91,22 +91,33 @@ function ProjectsAdmin({ t }) {
 
 /* ─── Books ────────────────────────────────────────────── */
 function BooksAdmin({ t }) {
-  const [items, setItems] = useState([])
-  const [form, setForm]   = useState(null)
+  const [items, setItems]   = useState([])
+  const [form, setForm]     = useState(null)
   const [saving, setSaving] = useState(false)
 
   const load = () => supabase.from('books').select('*').order('created_at', { ascending: false })
     .then(({ data }) => setItems(data ?? []))
   useEffect(() => { load() }, [])
 
-  const blank = { title_zh: '', title_en: '', author_zh: '', author_en: '', content: '' }
+  const blank = {
+    title_zh: '', title_en: '', author_zh: '', author_en: '',
+    keywords: '', core_concept: '', reason_to_read: '',
+    sections: [], published: false,
+  }
 
   const save = async () => {
     setSaving(true)
     const payload = {
-      title_zh: form.title_zh, title_en: form.title_en,
-      author_zh: form.author_zh, author_en: form.author_en,
-      content: form.content,
+      title_zh:       form.title_zh,
+      title_en:       form.title_en,
+      author_zh:      form.author_zh,
+      author_en:      form.author_en,
+      keywords:       form.keywords,
+      core_concept:   form.core_concept,
+      reason_to_read: form.reason_to_read,
+      sections:       form.sections ?? [],
+      published:      form.published ?? false,
+      updated_at:     new Date().toISOString(),
     }
     if (form.id) await supabase.from('books').update(payload).eq('id', form.id)
     else         await supabase.from('books').insert(payload)
@@ -118,18 +129,93 @@ function BooksAdmin({ t }) {
     await supabase.from('books').delete().eq('id', id); await load()
   }
 
+  const sf = (key, v) => setForm(p => ({ ...p, [key]: v }))
+
   return (
     <CRUDPanel
       items={items} form={form} setForm={setForm}
       blank={blank} save={save} del={del} saving={saving} t={t}
       label={item => item.title_zh || item.title_en}
     >
-      <TF label={t('admin', 'titleZh')}    val={form?.title_zh}  set={v => setForm(p => ({ ...p, title_zh: v }))} />
-      <TF label={t('admin', 'titleEn')}    val={form?.title_en}  set={v => setForm(p => ({ ...p, title_en: v }))} />
-      <TF label="作者（中文）"               val={form?.author_zh} set={v => setForm(p => ({ ...p, author_zh: v }))} />
-      <TF label={t('admin', 'author')}     val={form?.author_en} set={v => setForm(p => ({ ...p, author_en: v }))} />
-      <TA label="Review"                   val={form?.content}   set={v => setForm(p => ({ ...p, content: v }))} rows={8} />
+      <TF label={t('admin', 'titleZh')}      val={form?.title_zh}       set={v => sf('title_zh', v)} />
+      <TF label={t('admin', 'titleEn')}      val={form?.title_en}       set={v => sf('title_en', v)} />
+      <TF label="作者（中文）"                 val={form?.author_zh}      set={v => sf('author_zh', v)} />
+      <TF label={t('admin', 'author')}       val={form?.author_en}      set={v => sf('author_en', v)} />
+      <TF label={t('admin', 'keywords')}     val={form?.keywords}       set={v => sf('keywords', v)} />
+      <TA label={t('admin', 'coreConcept')}  val={form?.core_concept}   set={v => sf('core_concept', v)} rows={3} />
+      <TA label={t('admin', 'reasonToRead')} val={form?.reason_to_read} set={v => sf('reason_to_read', v)} rows={3} />
+      <SectionsEditor
+        t={t}
+        sections={form?.sections ?? []}
+        onChange={s => sf('sections', s)}
+      />
+      <PublishedToggle val={form?.published ?? false} set={v => sf('published', v)} t={t} />
     </CRUDPanel>
+  )
+}
+
+function SectionsEditor({ t, sections, onChange }) {
+  const add = () => onChange([...sections, { section_title: '', subsection_title: '', body: '', quotes: '', questions: '' }])
+  const remove = i => onChange(sections.filter((_, idx) => idx !== i))
+  const upd = (i, key, val) => onChange(sections.map((s, idx) => idx === i ? { ...s, [key]: val } : s))
+
+  return (
+    <div>
+      <label style={lbl}>{t('admin', 'contentBlocks')}</label>
+      {sections.map((s, i) => (
+        <div key={i} style={{ background: 'rgba(0,0,0,0.18)', borderRadius: '8px', padding: '1rem', marginBottom: '0.6rem', border: '1px solid rgba(255,255,255,0.07)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
+            <span style={{ color: 'rgba(200,210,235,0.45)', fontSize: '0.76rem' }}>區塊 {i + 1}</span>
+            <button onClick={() => remove(i)} style={sBtn('#b91c1c')}>{t('admin', 'removeSection')}</button>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {[
+              [t('admin', 'sectionTitle'),    'section_title',    false],
+              [t('admin', 'subsectionTitle'), 'subsection_title', false],
+              [t('admin', 'body'),            'body',             true],
+              [t('admin', 'quotes'),          'quotes',           true],
+              [t('admin', 'questions'),       'questions',        true],
+            ].map(([label, key, isTA]) => (
+              <div key={key}>
+                <label style={lbl}>{label}</label>
+                {isTA
+                  ? <textarea value={s[key] ?? ''} onChange={e => upd(i, key, e.target.value)} rows={3} style={{ ...inp, resize: 'vertical' }} />
+                  : <input   value={s[key] ?? ''} onChange={e => upd(i, key, e.target.value)} style={inp} />
+                }
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+      <button onClick={add} style={{ ...sBtn('#1d4ed8'), marginTop: '0.25rem', fontSize: '0.8rem', padding: '5px 14px' }}>
+        {t('admin', 'addSection')}
+      </button>
+    </div>
+  )
+}
+
+function PublishedToggle({ val, set, t }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', padding: '0.35rem 0' }}>
+      <label style={lbl}>{t('admin', 'published')}</label>
+      <div
+        onClick={() => set(!val)}
+        style={{
+          width: '40px', height: '22px', borderRadius: '11px', cursor: 'pointer',
+          background: val ? 'rgba(37,99,235,0.7)' : 'rgba(255,255,255,0.14)',
+          position: 'relative', transition: 'background 0.2s', flexShrink: 0,
+        }}
+      >
+        <div style={{
+          width: '16px', height: '16px', borderRadius: '50%', background: '#fff',
+          position: 'absolute', top: '3px', left: val ? '21px' : '3px',
+          transition: 'left 0.18s',
+        }} />
+      </div>
+      <span style={{ color: val ? '#93c5fd' : 'rgba(200,210,235,0.4)', fontSize: '0.82rem' }}>
+        {val ? '已發布' : '草稿'}
+      </span>
+    </div>
   )
 }
 
