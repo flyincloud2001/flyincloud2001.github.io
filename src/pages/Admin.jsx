@@ -162,6 +162,17 @@ function BooksAdmin({ t }) {
   )
 }
 
+function handleTab(e, val, setter) {
+  if (e.key !== 'Tab') return
+  e.preventDefault()
+  const start = e.target.selectionStart
+  const end   = e.target.selectionEnd
+  setter(val.substring(0, start) + '\t' + val.substring(end))
+  requestAnimationFrame(() => {
+    e.target.selectionStart = e.target.selectionEnd = start + 1
+  })
+}
+
 function SectionsEditor({ t, sections, onChange }) {
   const add = () => onChange([...sections, { section_title: '', subsection_title: '', body: '', quotes: '', questions: '' }])
   const remove = i => onChange(sections.filter((_, idx) => idx !== i))
@@ -187,7 +198,7 @@ function SectionsEditor({ t, sections, onChange }) {
               <div key={key}>
                 <label style={lbl}>{label}</label>
                 {isTA
-                  ? <textarea value={s[key] ?? ''} onChange={e => upd(i, key, e.target.value)} rows={3} style={{ ...inp, resize: 'vertical' }} />
+                  ? <textarea value={s[key] ?? ''} onChange={e => upd(i, key, e.target.value)} onKeyDown={e => handleTab(e, s[key] ?? '', v => upd(i, key, v))} rows={3} style={{ ...inp, resize: 'vertical' }} />
                   : <input   value={s[key] ?? ''} onChange={e => upd(i, key, e.target.value)} style={inp} />
                 }
               </div>
