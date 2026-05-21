@@ -15,7 +15,7 @@ export default function Background() {
     zIndex: 0,
     width: '100%',
     height: '100%',
-    objectFit: 'contain',
+    objectFit: 'cover',
     background: '#0a0c14',
   }
 
