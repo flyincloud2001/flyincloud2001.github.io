@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "node -e \"require('fs').copyFileSync('index.template.html','index.html')\" && vite build && node -e \"const fs=require('fs');fs.copyFileSync('dist/index.html','dist/404.html')\"",
-    "deploy": "npm run build && node -e \"const fs=require('fs'),p=require('path');fs.copyFileSync('dist/index.html','index.html');fs.copyFileSync('dist/404.html','404.html');fs.readdirSync('dist/assets').forEach(f=>{fs.copyFileSync(p.join('dist/assets',f),p.join('assets',f))})\"",
+    "deploy": "npm run build && node -e \"const fs=require('fs'),p=require('path');fs.copyFileSync('dist/index.html','index.html');fs.copyFileSync('dist/404.html','404.html');['robots.txt','sitemap.xml'].forEach(f=>{if(fs.existsSync(p.join('dist',f)))fs.copyFileSync(p.join('dist',f),f)});fs.readdirSync('dist/assets').forEach(f=>{fs.copyFileSync(p.join('dist/assets',f),p.join('assets',f))})\"",
     "lint": "eslint .",
     "preview": "vite preview"
   },
