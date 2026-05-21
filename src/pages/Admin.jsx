@@ -61,11 +61,17 @@ function ProjectsAdmin({ t }) {
     .then(({ data }) => setItems(data ?? []))
   useEffect(() => { load() }, [])
 
-  const blank = { title: '', description: '', pdf_url: '' }
+  const blank = { title_zh: '', title_en: '', description_zh: '', description_en: '', url: '' }
 
   const save = async () => {
     setSaving(true)
-    const payload = { title: form.title, description: form.description, pdf_url: form.pdf_url }
+    const payload = {
+      title_zh:       form.title_zh,
+      title_en:       form.title_en,
+      description_zh: form.description_zh,
+      description_en: form.description_en,
+      url:            form.url,
+    }
     if (form.id) await supabase.from('projects').update(payload).eq('id', form.id)
     else         await supabase.from('projects').insert(payload)
     await load(); setForm(null); setSaving(false)
@@ -82,9 +88,11 @@ function ProjectsAdmin({ t }) {
       blank={blank} save={save} del={del} saving={saving} t={t}
       label={item => item.title}
     >
-      <TF label="Title"       val={form?.title}       set={v => setForm(p => ({ ...p, title: v }))} />
-      <TA label="Description" val={form?.description} set={v => setForm(p => ({ ...p, description: v }))} />
-      <TF label="PDF URL"     val={form?.pdf_url}     set={v => setForm(p => ({ ...p, pdf_url: v }))} />
+      <TF label={t('admin', 'titleZh')}  val={form?.title_zh}       set={v => setForm(p => ({ ...p, title_zh: v }))} />
+      <TF label={t('admin', 'titleEn')}  val={form?.title_en}       set={v => setForm(p => ({ ...p, title_en: v }))} />
+      <TA label={t('admin', 'descZh')}   val={form?.description_zh} set={v => setForm(p => ({ ...p, description_zh: v }))} />
+      <TA label={t('admin', 'descEn')}   val={form?.description_en} set={v => setForm(p => ({ ...p, description_en: v }))} />
+      <TF label={t('admin', 'url')}      val={form?.url}            set={v => setForm(p => ({ ...p, url: v }))} />
     </CRUDPanel>
   )
 }

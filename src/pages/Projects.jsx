@@ -11,7 +11,6 @@ export default function Projects() {
     supabase
       .from('projects')
       .select('*')
-      .eq('published', true)
       .order('created_at', { ascending: false })
       .then(({ data }) => { setProjects(data ?? []); setLoading(false) })
   }, [])
@@ -32,12 +31,15 @@ export default function Projects() {
 }
 
 function ProjectCard({ p }) {
+  const { lang } = useLang()
+  const title = lang === 'zh' ? (p.title_zh || p.title_en) : (p.title_en || p.title_zh)
+  const desc  = lang === 'zh' ? (p.description_zh || p.description_en) : (p.description_en || p.description_zh)
   return (
     <div style={card}>
-      <h3 style={{ margin: '0 0 0.5rem', fontSize: '1rem', color: '#fff', fontWeight: 600 }}>{p.title}</h3>
-      {p.description && <p style={{ margin: '0 0 0.75rem', fontSize: '0.88rem', color: 'rgba(210,215,235,0.78)', lineHeight: 1.65 }}>{p.description}</p>}
-      {p.pdf_url && (
-        <a href={p.pdf_url} target="_blank" rel="noopener noreferrer"
+      <h3 style={{ margin: '0 0 0.5rem', fontSize: '1rem', color: '#fff', fontWeight: 600 }}>{title}</h3>
+      {desc && <p style={{ margin: '0 0 0.75rem', fontSize: '0.88rem', color: 'rgba(210,215,235,0.78)', lineHeight: 1.65 }}>{desc}</p>}
+      {p.url && (
+        <a href={p.url} target="_blank" rel="noopener noreferrer"
           style={{ fontSize: '0.82rem', color: '#6ea8fe', textDecoration: 'none' }}>
           PDF →
         </a>
