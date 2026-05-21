@@ -194,7 +194,7 @@ function BodyParagraphs({ text }) {
     <div style={{ marginTop: '0.3rem' }}>
       {text.split('\n').map((line, i) =>
         line.trim()
-          ? <p key={i} style={{ ...bodyText, textIndent: '2em', margin: '0 0 0.4rem' }}>{line}</p>
+          ? <p key={i} style={{ ...bodyText, margin: '0 0 0.4rem' }}>{line}</p>
           : <div key={i} style={{ height: '0.5em' }} />
       )}
     </div>

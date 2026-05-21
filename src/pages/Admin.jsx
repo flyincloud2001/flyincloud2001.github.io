@@ -167,9 +167,9 @@ function handleTab(e, val, setter) {
   e.preventDefault()
   const start = e.target.selectionStart
   const end   = e.target.selectionEnd
-  setter(val.substring(0, start) + '\t' + val.substring(end))
+  setter(val.substring(0, start) + '　　' + val.substring(end))
   requestAnimationFrame(() => {
-    e.target.selectionStart = e.target.selectionEnd = start + 1
+    e.target.selectionStart = e.target.selectionEnd = start + 2
   })
 }
 
