@@ -25,15 +25,43 @@
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Foster Teng",
-      "alternateName": "滕雲飛",
+      "alternateName": ["滕雲飛", "Foster"],
       "url": "https://fosterteng.com",
-      "description": "Mathematics and Physics student at the University of Toronto.",
-      "sameAs": ["https://github.com/flyincloud2001"]
+      "email": "flyincloud2001@gmail.com",
+      "description": "Foster Teng（滕雲飛）is a Mathematics and Physics student at the University of Toronto. Personal website featuring book reviews, academic projects, and photography.",
+      "knowsLanguage": ["zh-TW", "en"],
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "University of Toronto",
+        "sameAs": "https://www.utoronto.ca"
+      },
+      "sameAs": ["https://github.com/flyincloud2001"],
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://fosterteng.com"
+      }
     }
     </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <!-- SEO fallback for crawlers without JavaScript -->
+    <noscript>
+      <main style="font-family:sans-serif;max-width:680px;margin:2rem auto;padding:0 1rem">
+        <h1>Foster Teng｜滕雲飛</h1>
+        <p>
+          Foster Teng（滕雲飛）的個人網站。多倫多大學數學與物理系學生。
+          Personal website of Foster Teng — Mathematics &amp; Physics student
+          at the University of Toronto.
+        </p>
+        <nav>
+          <a href="/projects">Projects</a> ·
+          <a href="/notes">Notes 書評</a> ·
+          <a href="/photos">Photos</a> ·
+          <a href="/contact">Contact</a>
+        </nav>
+      </main>
+    </noscript>
   </body>
 </html>

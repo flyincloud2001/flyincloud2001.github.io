@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase'
 import { useLang } from '../context/LangContext'
 
 export default function Photos() {
-  const { t, lang }   = useLang()
+  const { t }   = useLang()
   const [photos, setPhotos] = useState([])
   const [loading, setLoading] = useState(true)
   const [lightbox, setLightbox] = useState(null)
@@ -16,6 +16,22 @@ export default function Photos() {
       .then(({ data }) => { setPhotos(data ?? []); setLoading(false) })
   }, [])
 
+  // ESC to close
+  useEffect(() => {
+    const onKey = e => { if (e.key === 'Escape') setLightbox(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  // Prevent body scroll when lightbox open
+  useEffect(() => {
+    document.body.style.overflow = lightbox ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [lightbox])
+
+  const open  = p => setLightbox(p)
+  const close = () => setLightbox(null)
+
   return (
     <div style={{ padding: '0 clamp(1.25rem, 5vw, 2rem) 0 clamp(1.25rem, 5.3vw, 64px)' }}>
       <h2 style={h2}>{t('photos', 'title')}</h2>
@@ -27,7 +43,7 @@ export default function Photos() {
           {photos.map(p => {
             const caption = p.caption || ''
             return (
-              <div key={p.id} style={{ cursor: 'pointer' }} onClick={() => setLightbox(p)}>
+              <div key={p.id} style={{ cursor: 'pointer' }} onClick={() => open(p)}>
                 <img
                   src={p.url} alt={caption || ''}
                   style={{ width: '100%', height: '145px', objectFit: 'cover', borderRadius: '8px', display: 'block' }}
@@ -46,18 +62,67 @@ export default function Photos() {
 
       {lightbox && (
         <div
-          onClick={() => setLightbox(null)}
+          onClick={close}
           style={{
             position: 'fixed', inset: 0, zIndex: 200,
-            background: 'rgba(0,0,0,0.9)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'zoom-out',
+            background: 'rgba(0,0,0,0.92)',
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
           }}
         >
+          {/* Close button */}
+          <button
+            onClick={e => { e.stopPropagation(); close() }}
+            style={{
+              position: 'absolute', top: '1rem', right: '1rem',
+              background: 'rgba(255,255,255,0.15)',
+              border: '1px solid rgba(255,255,255,0.25)',
+              borderRadius: '50%',
+              width: '44px', height: '44px',
+              color: '#fff', fontSize: '1.3rem',
+              cursor: 'pointer', zIndex: 201,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >✕</button>
+
+          {/* Image */}
           <img
-            src={lightbox.url} alt=""
-            style={{ maxWidth: '92vw', maxHeight: '90vh', borderRadius: '8px', objectFit: 'contain' }}
+            src={lightbox.url} alt={lightbox.caption || ''}
+            onClick={e => e.stopPropagation()}
+            style={{
+              maxWidth: '92vw',
+              maxHeight: lightbox.caption ? '80vh' : '88vh',
+              borderRadius: '8px',
+              objectFit: 'contain',
+            }}
           />
+
+          {/* Caption */}
+          {lightbox.caption && (
+            <p
+              onClick={e => e.stopPropagation()}
+              style={{
+                marginTop: '0.85rem',
+                color: 'rgba(255,255,255,0.7)',
+                fontSize: 'clamp(0.8rem, 2.5vw, 0.95rem)',
+                textAlign: 'center',
+                padding: '0 1.5rem',
+                maxWidth: '600px',
+              }}
+            >
+              {lightbox.caption}
+            </p>
+          )}
+
+          {/* Hint */}
+          <p style={{
+            position: 'absolute', bottom: '1rem',
+            color: 'rgba(255,255,255,0.28)', fontSize: '0.75rem',
+            margin: 0, pointerEvents: 'none',
+          }}>
+            點擊空白處或按 ESC 關閉
+          </p>
         </div>
       )}
     </div>
