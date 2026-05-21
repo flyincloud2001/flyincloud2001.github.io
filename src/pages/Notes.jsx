@@ -18,7 +18,7 @@ export default function Notes() {
   }, [])
 
   return (
-    <div style={{ paddingLeft: '64px' }}>
+    <div style={{ padding: '0 clamp(1.25rem, 5vw, 2rem) 0 clamp(1.25rem, 5.3vw, 64px)' }}>
       <h2 style={h2}>{t('notes', 'title')}</h2>
       <p style={{ color: 'rgba(200,210,235,0.55)', marginBottom: '1.5rem', fontSize: '0.88rem' }}>
         {t('notes', 'subtitle')}

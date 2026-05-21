@@ -17,7 +17,7 @@ export default function Photos() {
   }, [])
 
   return (
-    <div style={{ paddingLeft: '64px' }}>
+    <div style={{ padding: '0 clamp(1.25rem, 5vw, 2rem) 0 clamp(1.25rem, 5.3vw, 64px)' }}>
       <h2 style={h2}>{t('photos', 'title')}</h2>
 
       {loading ? <div style={{ color: 'rgba(200,205,225,0.45)' }}>…</div>

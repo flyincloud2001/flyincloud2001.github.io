@@ -51,7 +51,7 @@ export default function BookDetail() {
   const review = lang === 'zh' ? (book.review_zh || book.review_en) : (book.review_en || book.review_zh)
 
   return (
-    <div>
+    <div style={{ padding: '0 clamp(1.25rem, 5vw, 2rem) 0 clamp(1.25rem, 5.3vw, 64px)' }}>
       <button onClick={() => navigate('/notes')} style={backBtn}>{t('notes', 'back')}</button>
 
       {/* Header */}
@@ -82,7 +82,7 @@ export default function BookDetail() {
           placeholder={lang === 'zh' ? '暱稱（選填，留空顯示「匿名」）' : 'Nickname (optional, blank = Anonymous)'}
           style={inputSm}
         />
-        <div style={{ display: 'flex', gap: '0.65rem' }}>
+        <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
           <textarea
             value={content}
             onChange={e => setContent(e.target.value)}
@@ -134,6 +134,7 @@ const backBtn = {
   marginBottom: '0.75rem', display: 'block',
 }
 const inputSm = {
+  width: '100%',
   background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
   borderRadius: '7px', padding: '7px 10px', color: '#dde1ec', fontSize: '0.86rem', outline: 'none',
 }

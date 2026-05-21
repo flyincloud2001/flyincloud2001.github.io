@@ -33,7 +33,7 @@ export default function Contact() {
   }
 
   return (
-    <div style={{ maxWidth: '560px', paddingLeft: '64px' }}>
+    <div style={{ maxWidth: '560px', padding: '0 clamp(1.25rem, 5vw, 2rem) 0 clamp(1.25rem, 5.3vw, 64px)' }}>
       <h2 style={headingStyle}>{t('contact', 'title')}</h2>
 
       {status === 'success' ? (
@@ -76,6 +76,7 @@ export default function Contact() {
 
 const headingStyle = { fontSize: '1.6rem', fontWeight: 700, color: '#fff', margin: '0 0 1.5rem' }
 const inputStyle = {
+  width: '100%',
   background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
   borderRadius: '8px', padding: '0.65rem 0.85rem',
   color: '#dde1ec', fontSize: '0.9rem', outline: 'none',
