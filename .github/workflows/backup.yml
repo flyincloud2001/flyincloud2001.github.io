@@ -1,0 +1,48 @@
+name: Daily Supabase Backup
+
+on:
+  schedule:
+    - cron: '0 2 * * *'   # 每天 UTC 02:00（台灣時間 10:00）
+  workflow_dispatch:        # 允許手動觸發
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Fetch books from Supabase
+        run: |
+          curl -s "${{ secrets.SUPABASE_URL }}/rest/v1/books?select=*&order=created_at.asc" \
+            -H "apikey: ${{ secrets.SUPABASE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_KEY }}" \
+            -o content/books.json
+
+      - name: Fetch projects from Supabase
+        run: |
+          curl -s "${{ secrets.SUPABASE_URL }}/rest/v1/projects?select=*&order=created_at.asc" \
+            -H "apikey: ${{ secrets.SUPABASE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_KEY }}" \
+            -o content/projects.json
+
+      - name: Fetch comments from Supabase
+        run: |
+          curl -s "${{ secrets.SUPABASE_URL }}/rest/v1/comments?select=*&order=created_at.asc" \
+            -H "apikey: ${{ secrets.SUPABASE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_KEY }}" \
+            -o content/comments.json
+
+      - name: Commit backup if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/
+          if git diff --cached --quiet; then
+            echo "No changes to backup."
+          else
+            git commit -m "chore: auto backup $(date -u '+%Y-%m-%d')"
+            git push
+          fi
