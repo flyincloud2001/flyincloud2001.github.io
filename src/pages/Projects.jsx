@@ -11,6 +11,7 @@ export default function Projects() {
     supabase
       .from('projects')
       .select('*')
+      .eq('published', true)
       .order('created_at', { ascending: false })
       .then(({ data }) => { setProjects(data ?? []); setLoading(false) })
   }, [])
@@ -23,31 +24,27 @@ export default function Projects() {
         <p style={empty}>{t('projects', 'empty')}</p>
       ) : (
         <div style={{ display: 'grid', gap: '1.1rem', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))' }}>
-          {projects.map(p => <ProjectCard key={p.id} p={p} lang={lang} />)}
+          {projects.map(p => <ProjectCard key={p.id} p={p} />)}
         </div>
       )}
     </div>
   )
 }
 
-function ProjectCard({ p, lang }) {
-  const title = pick(lang, p.title_zh, p.title_en)
-  const desc  = pick(lang, p.description_zh, p.description_en)
+function ProjectCard({ p }) {
   return (
     <div style={card}>
-      <h3 style={{ margin: '0 0 0.5rem', fontSize: '1rem', color: '#fff', fontWeight: 600 }}>{title}</h3>
-      {desc && <p style={{ margin: '0 0 0.75rem', fontSize: '0.88rem', color: 'rgba(210,215,235,0.78)', lineHeight: 1.65 }}>{desc}</p>}
-      {p.url && (
-        <a href={p.url} target="_blank" rel="noopener noreferrer"
+      <h3 style={{ margin: '0 0 0.5rem', fontSize: '1rem', color: '#fff', fontWeight: 600 }}>{p.title}</h3>
+      {p.description && <p style={{ margin: '0 0 0.75rem', fontSize: '0.88rem', color: 'rgba(210,215,235,0.78)', lineHeight: 1.65 }}>{p.description}</p>}
+      {p.pdf_url && (
+        <a href={p.pdf_url} target="_blank" rel="noopener noreferrer"
           style={{ fontSize: '0.82rem', color: '#6ea8fe', textDecoration: 'none' }}>
-          View →
+          PDF →
         </a>
       )}
     </div>
   )
 }
-
-const pick = (lang, zh, en) => lang === 'zh' ? (zh || en) : (en || zh)
 const h2   = { fontSize: '1.6rem', fontWeight: 700, color: '#fff', margin: '0 0 1.5rem' }
 const empty = { color: 'rgba(200,205,225,0.6)', fontStyle: 'italic' }
 const card  = { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '1rem' }

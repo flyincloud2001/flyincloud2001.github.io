@@ -21,8 +21,7 @@ export default function ContentPanel({ children }) {
       top: '60px',
       left: 0, right: 0, bottom: 0,
       zIndex: 10,
-      overflowY: 'auto',
-      overflowX: 'hidden',
+      overflow: 'hidden auto',
       padding: '2.5rem 0 2.5rem 0',
     }}>
       <div

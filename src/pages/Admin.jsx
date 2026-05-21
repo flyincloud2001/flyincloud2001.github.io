@@ -36,7 +36,7 @@ export default function Admin() {
   }
 
   return (
-    <div>
+    <div style={{ padding: '0 clamp(1.25rem, 5vw, 2rem) 0 clamp(1.25rem, 5.3vw, 64px)' }}>
       <h2 style={h2}>{t('admin', 'title')}</h2>
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
         {TABS.map(k => (
@@ -61,11 +61,11 @@ function ProjectsAdmin({ t }) {
     .then(({ data }) => setItems(data ?? []))
   useEffect(() => { load() }, [])
 
-  const blank = { title_zh: '', title_en: '', description_zh: '', description_en: '', url: '' }
+  const blank = { title: '', description: '', pdf_url: '' }
 
   const save = async () => {
     setSaving(true)
-    const payload = { title_zh: form.title_zh, title_en: form.title_en, description_zh: form.description_zh, description_en: form.description_en, url: form.url }
+    const payload = { title: form.title, description: form.description, pdf_url: form.pdf_url }
     if (form.id) await supabase.from('projects').update(payload).eq('id', form.id)
     else         await supabase.from('projects').insert(payload)
     await load(); setForm(null); setSaving(false)
@@ -80,13 +80,11 @@ function ProjectsAdmin({ t }) {
     <CRUDPanel
       items={items} form={form} setForm={setForm}
       blank={blank} save={save} del={del} saving={saving} t={t}
-      label={item => item.title_zh || item.title_en}
+      label={item => item.title}
     >
-      <TF label={t('admin', 'titleZh')}   val={form?.title_zh}        set={v => setForm(p => ({ ...p, title_zh: v }))} />
-      <TF label={t('admin', 'titleEn')}   val={form?.title_en}        set={v => setForm(p => ({ ...p, title_en: v }))} />
-      <TA label={t('admin', 'descZh')}    val={form?.description_zh}  set={v => setForm(p => ({ ...p, description_zh: v }))} />
-      <TA label={t('admin', 'descEn')}    val={form?.description_en}  set={v => setForm(p => ({ ...p, description_en: v }))} />
-      <TF label={t('admin', 'url')}       val={form?.url}             set={v => setForm(p => ({ ...p, url: v }))} />
+      <TF label="Title"       val={form?.title}       set={v => setForm(p => ({ ...p, title: v }))} />
+      <TA label="Description" val={form?.description} set={v => setForm(p => ({ ...p, description: v }))} />
+      <TF label="PDF URL"     val={form?.pdf_url}     set={v => setForm(p => ({ ...p, pdf_url: v }))} />
     </CRUDPanel>
   )
 }
@@ -101,15 +99,14 @@ function BooksAdmin({ t }) {
     .then(({ data }) => setItems(data ?? []))
   useEffect(() => { load() }, [])
 
-  const blank = { title_zh: '', title_en: '', author_zh: '', author_en: '', cover_image_url: '', review_zh: '', review_en: '' }
+  const blank = { title_zh: '', title_en: '', author_zh: '', author_en: '', content: '' }
 
   const save = async () => {
     setSaving(true)
     const payload = {
       title_zh: form.title_zh, title_en: form.title_en,
       author_zh: form.author_zh, author_en: form.author_en,
-      cover_image_url: form.cover_image_url,
-      review_zh: form.review_zh, review_en: form.review_en,
+      content: form.content,
     }
     if (form.id) await supabase.from('books').update(payload).eq('id', form.id)
     else         await supabase.from('books').insert(payload)
@@ -127,13 +124,11 @@ function BooksAdmin({ t }) {
       blank={blank} save={save} del={del} saving={saving} t={t}
       label={item => item.title_zh || item.title_en}
     >
-      <TF label={t('admin', 'titleZh')}    val={form?.title_zh}       set={v => setForm(p => ({ ...p, title_zh: v }))} />
-      <TF label={t('admin', 'titleEn')}    val={form?.title_en}       set={v => setForm(p => ({ ...p, title_en: v }))} />
-      <TF label="作者（中文）"               val={form?.author_zh}      set={v => setForm(p => ({ ...p, author_zh: v }))} />
-      <TF label={t('admin', 'author')}     val={form?.author_en}      set={v => setForm(p => ({ ...p, author_en: v }))} />
-      <TF label="封面圖片網址"               val={form?.cover_image_url} set={v => setForm(p => ({ ...p, cover_image_url: v }))} />
-      <TA label={t('admin', 'reviewZh')}   val={form?.review_zh}      set={v => setForm(p => ({ ...p, review_zh: v }))} rows={8} />
-      <TA label={t('admin', 'reviewEn')}   val={form?.review_en}      set={v => setForm(p => ({ ...p, review_en: v }))} rows={8} />
+      <TF label={t('admin', 'titleZh')}    val={form?.title_zh}  set={v => setForm(p => ({ ...p, title_zh: v }))} />
+      <TF label={t('admin', 'titleEn')}    val={form?.title_en}  set={v => setForm(p => ({ ...p, title_en: v }))} />
+      <TF label="作者（中文）"               val={form?.author_zh} set={v => setForm(p => ({ ...p, author_zh: v }))} />
+      <TF label={t('admin', 'author')}     val={form?.author_en} set={v => setForm(p => ({ ...p, author_en: v }))} />
+      <TA label="Review"                   val={form?.content}   set={v => setForm(p => ({ ...p, content: v }))} rows={8} />
     </CRUDPanel>
   )
 }
@@ -168,8 +163,7 @@ function PhotosAdmin({ t }) {
     const e = edits[id] ?? {}
     const orig = photos.find(p => p.id === id)
     await supabase.from('photos').update({
-      caption_zh: e.zh ?? orig?.caption_zh ?? '',
-      caption_en: e.en ?? orig?.caption_en ?? '',
+      caption: e.caption ?? orig?.caption ?? '',
     }).eq('id', id)
     await load()
   }
@@ -195,12 +189,9 @@ function PhotosAdmin({ t }) {
         {photos.map(p => (
           <div key={p.id} style={{ background: 'rgba(255,255,255,0.04)', borderRadius: '8px', padding: '0.75rem', border: '1px solid rgba(255,255,255,0.07)' }}>
             <img src={p.url} alt="" style={{ width: '100%', height: '125px', objectFit: 'cover', borderRadius: '6px', marginBottom: '0.5rem' }} />
-            <input placeholder={t('admin', 'captionZh')} defaultValue={p.caption_zh}
-              onChange={e => setEdits(prev => ({ ...prev, [p.id]: { ...prev[p.id], zh: e.target.value } }))}
+            <input placeholder="Caption" defaultValue={p.caption}
+              onChange={e => setEdits(prev => ({ ...prev, [p.id]: { ...prev[p.id], caption: e.target.value } }))}
               style={{ ...miniIn, marginBottom: '4px' }} />
-            <input placeholder={t('admin', 'captionEn')} defaultValue={p.caption_en}
-              onChange={e => setEdits(prev => ({ ...prev, [p.id]: { ...prev[p.id], en: e.target.value } }))}
-              style={miniIn} />
             <div style={{ display: 'flex', gap: '6px', marginTop: '6px' }}>
               <button onClick={() => saveCaption(p.id)} style={sBtn('#1d4ed8')}>{t('admin', 'save')}</button>
               <button onClick={() => del(p.id, p.url)}  style={sBtn('#b91c1c')}>{t('admin', 'delete')}</button>
@@ -218,14 +209,14 @@ function ContactsAdmin({ t }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.from('pw_contacts').select('*').order('created_at', { ascending: false })
+    supabase.from('contacts').select('*').order('created_at', { ascending: false })
       .then(({ data }) => { setItems(data ?? []); setLoading(false) })
       .catch(() => setLoading(false))
   }, [])
 
   const del = async id => {
     if (!window.confirm(t('admin', 'confirmDelete'))) return
-    await supabase.from('pw_contacts').delete().eq('id', id)
+    await supabase.from('contacts').delete().eq('id', id)
     setItems(prev => prev.filter(i => i.id !== id))
   }
 

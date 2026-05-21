@@ -48,7 +48,7 @@ export default function BookDetail() {
   if (!book)   return <p style={{ color: '#f87171' }}>Not found.</p>
 
   const title  = lang === 'zh' ? (book.title_zh  || book.title_en)  : (book.title_en  || book.title_zh)
-  const review = lang === 'zh' ? (book.review_zh || book.review_en) : (book.review_en || book.review_zh)
+  const review = book.content ?? ''
 
   return (
     <div style={{ padding: '0 clamp(1.25rem, 5vw, 2rem) 0 clamp(1.25rem, 5.3vw, 64px)' }}>

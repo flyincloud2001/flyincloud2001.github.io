@@ -25,7 +25,7 @@ export default function Photos() {
        : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(175px, 1fr))', gap: '0.75rem' }}>
           {photos.map(p => {
-            const caption = lang === 'zh' ? (p.caption_zh || p.caption_en) : (p.caption_en || p.caption_zh)
+            const caption = p.caption || ''
             return (
               <div key={p.id} style={{ cursor: 'pointer' }} onClick={() => setLightbox(p)}>
                 <img

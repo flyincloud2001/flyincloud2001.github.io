@@ -50,12 +50,31 @@ export default function About() {
           lineHeight: 1.85,
           color: 'rgba(230,236,255,0.92)',
           maxWidth: '580px',
-          margin: 0,
+          margin: '0 0 1.1rem',
           textAlign: 'left',
           textShadow: '0 1px 10px rgba(0,0,0,0.75), 0 1px 2px rgba(0,0,0,0.85)',
           minHeight: '1.2em',
         }}
       />
+
+      {/* CV link */}
+      <p style={{
+        fontSize: 'clamp(0.88rem, 2vw, 1rem)',
+        color: 'rgba(200,210,240,0.75)',
+        margin: 0,
+        textShadow: '0 1px 8px rgba(0,0,0,0.75)',
+      }}>
+        Here is my{' '}
+        <a
+          href="https://fosterteng.com/assets/cv.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: 'rgba(160,185,255,0.9)', textDecoration: 'underline' }}
+        >
+          CV
+        </a>
+        .
+      </p>
     </div>
   )
 }

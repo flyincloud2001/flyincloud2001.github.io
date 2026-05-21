@@ -14,7 +14,7 @@ export default function Contact() {
     if (!form.name || !form.email || !form.message) return
     setStatus('sending')
 
-    const { error: dbErr } = await supabase.from('pw_contacts').insert({
+    const { error: dbErr } = await supabase.from('contacts').insert({
       name: form.name, email: form.email, message: form.message,
     })
 
@@ -77,6 +77,8 @@ export default function Contact() {
 const headingStyle = { fontSize: '1.6rem', fontWeight: 700, color: '#fff', margin: '0 0 1.5rem' }
 const inputStyle = {
   width: '100%',
+  minWidth: '0',
+  boxSizing: 'border-box',
   background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
   borderRadius: '8px', padding: '0.65rem 0.85rem',
   color: '#dde1ec', fontSize: '0.9rem', outline: 'none',
