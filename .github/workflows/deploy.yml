@@ -17,6 +17,11 @@ jobs:
     permissions:
       contents: write
 
+    env:
+      VITE_SUPABASE_URL: https://zstlvzvkbhhufbxpqvky.supabase.co
+      VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzdGx2enZrYmhodWZieHBxdmt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzMTU5ODIsImV4cCI6MjA5NDg5MTk4Mn0.9rZ_1cFMJH_nw2xHtdhGiwkeG38Ll_xzOU4c9wBeJiQ
+      VITE_ADMIN_EMAIL: flyincloud2001@gmail.com
+
     steps:
       - uses: actions/checkout@v4
 
