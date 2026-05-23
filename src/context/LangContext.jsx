@@ -83,7 +83,7 @@ const T = {
     },
     projects: { title: 'Projects', empty: 'No projects yet.' },
     notes: {
-      title: '', subtitle: 'Index', back: '← Back to list',
+      title: '', subtitle: 'Directory', back: '← Back to list',
       empty: 'No book reviews yet.',
       commentTitle: 'Comments',
       commentPh: 'Leave an anonymous comment…',
