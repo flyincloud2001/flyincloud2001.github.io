@@ -9,45 +9,35 @@ export default function Background() {
     return () => window.removeEventListener('resize', onResize)
   }, [])
 
-  const wrapStyle = {
+  const style = {
     position: 'fixed',
     inset: 0,
     zIndex: 0,
-    background: '#0a0c14',
-    filter: 'saturate(2) brightness(1.3)',
-    outline: '20px solid red',
-  }
-
-  const mediaStyle = {
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-    display: 'block',
+    background: '#0a0c14',
   }
 
   if (isMobile) {
     return (
-      <div style={wrapStyle}>
-        <img
-          src="/assets/phone web image.png"
-          alt=""
-          style={mediaStyle}
-          draggable={false}
-        />
-      </div>
+      <img
+        src="/assets/phone web image.png"
+        alt=""
+        style={style}
+        draggable={false}
+      />
     )
   }
 
   return (
-    <div style={wrapStyle}>
-      <video
-        style={mediaStyle}
-        src="/assets/desktop web video.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-      />
-    </div>
+    <video
+      style={style}
+      src="/assets/desktop web video.mp4"
+      autoPlay
+      muted
+      loop
+      playsInline
+    />
   )
 }
