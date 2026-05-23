@@ -349,6 +349,7 @@ function ContactsAdmin({ t }) {
 function AboutAdmin({ t }) {
   const [form, setForm]     = useState({ value_zh: '', value_en: '' })
   const [saving, setSaving] = useState(false)
+  const [saved,  setSaved]  = useState(false)
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
@@ -361,8 +362,14 @@ function AboutAdmin({ t }) {
 
   const save = async () => {
     setSaving(true)
-    await supabase.from('site_settings').upsert({ id: 'about_subtitle', value_zh: form.value_zh, value_en: form.value_en })
-    setSaving(false)
+    setSaved(false)
+    try {
+      await supabase.from('site_settings').upsert({ id: 'about_subtitle', value_zh: form.value_zh, value_en: form.value_en })
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2000)
+    } finally {
+      setSaving(false)
+    }
   }
 
   if (!loaded) return <Spin />
@@ -371,8 +378,8 @@ function AboutAdmin({ t }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', maxWidth: '640px' }}>
       <TA label={t('admin', 'subtitleZh')} val={form.value_zh} set={v => setForm(p => ({ ...p, value_zh: v }))} rows={5} />
       <TA label={t('admin', 'subtitleEn')} val={form.value_en} set={v => setForm(p => ({ ...p, value_en: v }))} rows={5} />
-      <button onClick={save} disabled={saving} style={{ ...sBtn('#1d4ed8'), alignSelf: 'flex-start', padding: '7px 20px' }}>
-        {saving ? '…' : t('admin', 'save')}
+      <button onClick={save} disabled={saving} style={{ ...sBtn(saved ? '#15803d' : '#1d4ed8'), alignSelf: 'flex-start', padding: '7px 20px' }}>
+        {saving ? '…' : saved ? '已儲存 ✓' : t('admin', 'save')}
       </button>
     </div>
   )
