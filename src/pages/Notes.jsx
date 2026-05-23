@@ -101,7 +101,7 @@ export default function Notes() {
         }
       `}</style>
 
-      <h2 style={h2}>{t('notes', 'title')}</h2>
+      {t('notes', 'title') && <h2 style={h2}>{t('notes', 'title')}</h2>}
       <p style={{ color: 'rgba(200,210,235,0.55)', marginBottom: '2rem', fontSize: '0.88rem' }}>
         {t('notes', 'subtitle')}
       </p>

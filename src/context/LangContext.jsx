@@ -14,7 +14,7 @@ const T = {
     },
     projects: { title: '專案', empty: '尚無專案。' },
     notes: {
-      title: '筆記', subtitle: '書評目錄', back: '← 返回目錄',
+      title: '', subtitle: '目錄', back: '← 返回目錄',
       empty: '尚無書評。',
       commentTitle: '評論區',
       commentPh: '留下您的匿名評論…',
@@ -83,7 +83,7 @@ const T = {
     },
     projects: { title: 'Projects', empty: 'No projects yet.' },
     notes: {
-      title: 'Notes', subtitle: 'Book Reviews', back: '← Back to list',
+      title: '', subtitle: 'Index', back: '← Back to list',
       empty: 'No book reviews yet.',
       commentTitle: 'Comments',
       commentPh: 'Leave an anonymous comment…',
