@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LangContext'
 
-const TABS = ['tabProjects', 'tabBooks', 'tabPhotos', 'tabContacts']
+const TABS = ['tabProjects', 'tabBooks', 'tabPhotos', 'tabContacts', 'tabAbout']
 
 export default function Admin() {
   const { user, isAdmin, loading, signIn } = useAuth()
@@ -47,6 +47,7 @@ export default function Admin() {
       {tab === 'tabBooks'    && <BooksAdmin    t={t} />}
       {tab === 'tabPhotos'   && <PhotosAdmin   t={t} />}
       {tab === 'tabContacts' && <ContactsAdmin t={t} />}
+      {tab === 'tabAbout'    && <AboutAdmin    t={t} />}
     </div>
   )
 }
@@ -340,6 +341,39 @@ function ContactsAdmin({ t }) {
           <span style={{ fontSize: '0.73rem', color: 'rgba(200,210,235,0.38)' }}>{new Date(c.created_at).toLocaleString()}</span>
         </div>
       ))}
+    </div>
+  )
+}
+
+/* ─── About ────────────────────────────────────────────── */
+function AboutAdmin({ t }) {
+  const [form, setForm]     = useState({ value_zh: '', value_en: '' })
+  const [saving, setSaving] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    supabase.from('site_settings').select('value_zh,value_en').eq('id', 'about_subtitle').single()
+      .then(({ data }) => {
+        if (data) setForm({ value_zh: data.value_zh, value_en: data.value_en })
+        setLoaded(true)
+      })
+  }, [])
+
+  const save = async () => {
+    setSaving(true)
+    await supabase.from('site_settings').upsert({ id: 'about_subtitle', value_zh: form.value_zh, value_en: form.value_en })
+    setSaving(false)
+  }
+
+  if (!loaded) return <Spin />
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', maxWidth: '640px' }}>
+      <TA label={t('admin', 'subtitleZh')} val={form.value_zh} set={v => setForm(p => ({ ...p, value_zh: v }))} rows={5} />
+      <TA label={t('admin', 'subtitleEn')} val={form.value_en} set={v => setForm(p => ({ ...p, value_en: v }))} rows={5} />
+      <button onClick={save} disabled={saving} style={{ ...sBtn('#1d4ed8'), alignSelf: 'flex-start', padding: '7px 20px' }}>
+        {saving ? '…' : t('admin', 'save')}
+      </button>
     </div>
   )
 }
