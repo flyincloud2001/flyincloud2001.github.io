@@ -14,7 +14,7 @@ export default function Background() {
     inset: 0,
     zIndex: 0,
     background: '#0a0c14',
-    filter: 'saturate(1.5) brightness(1.15)',
+    filter: 'saturate(2) brightness(1.3)',
     outline: '20px solid red',
   }
 
