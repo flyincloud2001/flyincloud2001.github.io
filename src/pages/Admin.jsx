@@ -376,8 +376,8 @@ function AboutAdmin({ t }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', maxWidth: '640px' }}>
-      <TA label={t('admin', 'subtitleZh')} val={form.value_zh} set={v => setForm(p => ({ ...p, value_zh: v }))} rows={5} />
-      <TA label={t('admin', 'subtitleEn')} val={form.value_en} set={v => setForm(p => ({ ...p, value_en: v }))} rows={5} />
+      <TA label={t('admin', 'subtitleZh')} val={form.value_zh} set={v => setForm(p => ({ ...p, value_zh: v }))} rows={5} onKeyDown={e => handleTab(e, form.value_zh, v => setForm(p => ({ ...p, value_zh: v })))} />
+      <TA label={t('admin', 'subtitleEn')} val={form.value_en} set={v => setForm(p => ({ ...p, value_en: v }))} rows={5} onKeyDown={e => handleTab(e, form.value_en, v => setForm(p => ({ ...p, value_en: v })))} />
       <button onClick={save} disabled={saving} style={{ ...sBtn(saved ? '#15803d' : '#1d4ed8'), alignSelf: 'flex-start', padding: '7px 20px' }}>
         {saving ? '…' : saved ? '已儲存 ✓' : t('admin', 'save')}
       </button>
@@ -425,11 +425,11 @@ function TF({ label, val, set }) {
   )
 }
 
-function TA({ label, val, set, rows = 4 }) {
+function TA({ label, val, set, rows = 4, onKeyDown }) {
   return (
     <div>
       <label style={lbl}>{label}</label>
-      <textarea value={val ?? ''} onChange={e => set(e.target.value)} rows={rows} style={{ ...inp, resize: 'vertical' }} />
+      <textarea value={val ?? ''} onChange={e => set(e.target.value)} onKeyDown={onKeyDown} rows={rows} style={{ ...inp, resize: 'vertical' }} />
     </div>
   )
 }

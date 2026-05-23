@@ -66,6 +66,7 @@ export default function About() {
           textAlign: 'left',
           textShadow: '0 1px 10px rgba(0,0,0,0.75), 0 1px 2px rgba(0,0,0,0.85)',
           minHeight: '1.2em',
+          whiteSpace: 'pre-wrap',
         }}
       />
 
