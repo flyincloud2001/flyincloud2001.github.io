@@ -21,10 +21,11 @@ export default function Background() {
 
   return (
     <img
-      src={isMobile ? "/assets/phone web image.png" : "/assets/desktop web image.png"}
+      src={isMobile ? "/assets/phone web image.webp" : "/assets/desktop web image.webp"}
       alt=""
       style={style}
       draggable={false}
+      fetchPriority="high"
     />
   )
 }
