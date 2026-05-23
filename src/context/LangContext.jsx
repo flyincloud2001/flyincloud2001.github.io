@@ -12,7 +12,7 @@ const T = {
       title: '滕雲飛',
       subtitle: '我是多倫多大學學生，專修於數學和物理，我的興趣廣泛，一言難盡。我喜歡閱讀一些書籍，並留下我對該書籍的想法。歡迎瀏覽我的想法並留下你寶貴的評論，謝謝!',
     },
-    projects: { title: '專案', empty: '尚無專案。' },
+    projects: { title: '', empty: '尚無專案。' },
     notes: {
       title: '', subtitle: '目錄', back: '← 返回目錄',
       empty: '尚無書評。',
@@ -81,7 +81,7 @@ const T = {
       title: 'Foster Teng',
       subtitle: 'I am a student at the University of Toronto, majoring in Mathematics and Physics. My interests are wide and hard to summarize. I enjoy reading books and leaving my thoughts on them. Feel free to browse my ideas and leave your valuable comments. Thank you!',
     },
-    projects: { title: 'Projects', empty: 'No projects yet.' },
+    projects: { title: '', empty: 'No projects yet.' },
     notes: {
       title: '', subtitle: 'Directory', back: '← Back to list',
       empty: 'No book reviews yet.',

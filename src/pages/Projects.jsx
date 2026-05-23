@@ -17,7 +17,7 @@ export default function Projects() {
 
   return (
     <div style={{ padding: '0 clamp(1.25rem, 5vw, 2rem) 0 clamp(1.25rem, 5.3vw, 64px)' }}>
-      <h2 style={h2}>{t('projects', 'title')}</h2>
+      {t('projects', 'title') && <h2 style={h2}>{t('projects', 'title')}</h2>}
 
       {loading ? <Spinner /> : projects.length === 0 ? (
         <p style={empty}>{t('projects', 'empty')}</p>
