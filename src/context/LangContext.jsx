@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useCallback } from 'react'
 const T = {
   zh: {
     nav: {
-      about: '關於', projects: '專案', notes: '筆記',
+      about: '關於', projects: '記事', notes: '書評',
       photos: '相片', contact: '聯絡',
       login: '登入', logout: '登出', admin: '後台',
       langSwitch: 'EN',
@@ -72,7 +72,7 @@ const T = {
   },
   en: {
     nav: {
-      about: 'About', projects: 'Projects', notes: 'Notes',
+      about: 'About', projects: 'Notes', notes: 'Book Reviews',
       photos: 'Photos', contact: 'Contact',
       login: 'Login', logout: 'Logout', admin: 'Admin',
       langSwitch: '中',
