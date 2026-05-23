@@ -19,25 +19,12 @@ export default function Background() {
     background: '#0a0c14',
   }
 
-  if (isMobile) {
-    return (
-      <img
-        src="/assets/phone web image.png"
-        alt=""
-        style={style}
-        draggable={false}
-      />
-    )
-  }
-
   return (
-    <video
+    <img
+      src={isMobile ? "/assets/phone web image.png" : "/assets/desktop web image.png"}
+      alt=""
       style={style}
-      src="/assets/desktop web video.mp4"
-      autoPlay
-      muted
-      loop
-      playsInline
+      draggable={false}
     />
   )
 }
