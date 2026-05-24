@@ -52,7 +52,7 @@ export default function BookDetail() {
 
   return (
     <div style={{ padding: '0 clamp(1.25rem, 5vw, 2rem) 0 clamp(1.25rem, 5.3vw, 64px)' }}>
-      <button onClick={() => navigate('/notes')} style={backBtn}>{t('notes', 'back')}</button>
+      <button onClick={() => navigate('/book-reviews')} style={backBtn}>{t('notes', 'back')}</button>
 
       {/* Header */}
       <div style={{ marginBottom: '2rem' }}>

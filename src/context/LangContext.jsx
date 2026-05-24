@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useCallback } from 'react'
 const T = {
   zh: {
     nav: {
-      about: '關於', projects: '記事', notes: '書評',
+      about: '首頁', projects: '記事', notes: '書評',
       photos: '相片', contact: '聯絡',
       login: '登入', logout: '登出', admin: '後台',
       langSwitch: 'EN',
@@ -36,7 +36,7 @@ const T = {
     },
     admin: {
       title: '後台管理',
-      tabProjects: '記事', tabBooks: '書評', tabPhotos: '相片', tabContacts: '聯絡訊息', tabAbout: '關於頁面',
+      tabProjects: '記事', tabBooks: '書評', tabPhotos: '相片', tabContacts: '聯絡訊息', tabAbout: '首頁',
       subtitleZh: '副標題（中文）', subtitleEn: '副標題（英文）',
       add: '新增', edit: '編輯', delete: '刪除', save: '儲存', cancel: '取消',
       confirmDelete: '確定刪除？此操作無法復原。',
@@ -72,7 +72,7 @@ const T = {
   },
   en: {
     nav: {
-      about: 'About', projects: 'Notes', notes: 'Book Reviews',
+      about: 'Home', projects: 'Notes', notes: 'Book Reviews',
       photos: 'Photos', contact: 'Contact',
       login: 'Login', logout: 'Logout', admin: 'Admin',
       langSwitch: '中',
@@ -105,7 +105,7 @@ const T = {
     },
     admin: {
       title: 'Admin Panel',
-      tabProjects: 'Notes', tabBooks: 'Book Reviews', tabPhotos: 'Photos', tabContacts: 'Contact Messages', tabAbout: 'About Page',
+      tabProjects: 'Notes', tabBooks: 'Book Reviews', tabPhotos: 'Photos', tabContacts: 'Contact Messages', tabAbout: 'Home',
       subtitleZh: 'Subtitle (Chinese)', subtitleEn: 'Subtitle (English)',
       add: 'Add', edit: 'Edit', delete: 'Delete', save: 'Save', cancel: 'Cancel',
       confirmDelete: 'Delete this item? This cannot be undone.',

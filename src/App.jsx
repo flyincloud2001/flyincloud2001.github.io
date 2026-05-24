@@ -22,9 +22,9 @@ export default function App() {
           <ContentPanel>
             <Routes>
               <Route path="/"          element={<About />}      />
-              <Route path="/projects"  element={<Projects />}   />
-              <Route path="/notes"     element={<Notes />}      />
-              <Route path="/notes/:id" element={<BookDetail />} />
+              <Route path="/notes"            element={<Projects />}   />
+              <Route path="/book-reviews"     element={<Notes />}      />
+              <Route path="/book-reviews/:id" element={<BookDetail />} />
               <Route path="/photos"    element={<Photos />}     />
               <Route path="/contact"   element={<Contact />}    />
               <Route path="/admin"     element={<Admin />}      />

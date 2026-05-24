@@ -117,7 +117,7 @@ export default function Notes() {
                   <div
                     key={book.id}
                     className="notes-row"
-                    onClick={() => navigate(`/notes/${book.id}`)}
+                    onClick={() => navigate(`/book-reviews/${book.id}`)}
                   >
                     <span className="notes-title">{book.title_zh || book.title_en}</span>
                     <span className="notes-date">{fmtDate(book)}</span>
