@@ -11,18 +11,19 @@ const FALLBACK = {
 export default function About() {
   const { t, lang }  = useLang()
   const subtitleRef  = useRef(null)
-  const [subtitles, setSubtitles] = useState({ zh: FALLBACK.zh, en: FALLBACK.en })
+  const [subtitles, setSubtitles] = useState(null)
 
   useEffect(() => {
     supabase.from('site_settings').select('value_zh,value_en').eq('id', 'about_subtitle').single()
       .then(({ data }) => {
-        if (data) setSubtitles({ zh: data.value_zh || FALLBACK.zh, en: data.value_en || FALLBACK.en })
+        setSubtitles({ zh: data?.value_zh || FALLBACK.zh, en: data?.value_en || FALLBACK.en })
       })
   }, [])
 
-  const subtitle = subtitles[lang] ?? FALLBACK[lang]
+  const subtitle = subtitles ? (subtitles[lang] ?? FALLBACK[lang]) : ''
 
   useEffect(() => {
+    if (!subtitle) return
     const el = subtitleRef.current
     if (!el) return
     el.textContent = ''
