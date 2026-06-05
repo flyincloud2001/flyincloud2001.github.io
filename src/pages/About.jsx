@@ -35,6 +35,23 @@ export default function About() {
       onUpdate() {
         el.textContent = subtitle.slice(0, Math.round(obj.n))
       },
+      onComplete() {
+        el.textContent = ''
+        subtitle.split(/(https?:\/\/[^\s]+)/).forEach(part => {
+          if (/^https?:\/\//.test(part)) {
+            const a = document.createElement('a')
+            a.href = part
+            a.textContent = part
+            a.target = '_blank'
+            a.rel = 'noopener noreferrer'
+            a.style.color = '#6ea8fe'
+            a.style.wordBreak = 'break-all'
+            el.appendChild(a)
+          } else {
+            el.appendChild(document.createTextNode(part))
+          }
+        })
+      },
     })
     return () => tween.kill()
   }, [subtitle])

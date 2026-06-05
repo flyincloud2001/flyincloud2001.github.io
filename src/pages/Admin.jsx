@@ -91,8 +91,8 @@ function ProjectsAdmin({ t }) {
     >
       <TF label={t('admin', 'titleZh')}  val={form?.title_zh}       set={v => setForm(p => ({ ...p, title_zh: v }))} />
       <TF label={t('admin', 'titleEn')}  val={form?.title_en}       set={v => setForm(p => ({ ...p, title_en: v }))} />
-      <TA label={t('admin', 'descZh')}   val={form?.description_zh} set={v => setForm(p => ({ ...p, description_zh: v }))} />
-      <TA label={t('admin', 'descEn')}   val={form?.description_en} set={v => setForm(p => ({ ...p, description_en: v }))} />
+      <TA label={t('admin', 'descZh')}   val={form?.description_zh} set={v => setForm(p => ({ ...p, description_zh: v }))} onKeyDown={e => handleTab(e, form?.description_zh ?? '', v => setForm(p => ({ ...p, description_zh: v })))} />
+      <TA label={t('admin', 'descEn')}   val={form?.description_en} set={v => setForm(p => ({ ...p, description_en: v }))} onKeyDown={e => handleTab(e, form?.description_en ?? '', v => setForm(p => ({ ...p, description_en: v })))} />
       <TF label={t('admin', 'url')}      val={form?.url}            set={v => setForm(p => ({ ...p, url: v }))} />
     </CRUDPanel>
   )
@@ -190,16 +190,16 @@ function SectionsEditor({ t, sections, onChange }) {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {[
-              [t('admin', 'sectionTitle'),    'section_title',    false],
-              [t('admin', 'subsectionTitle'), 'subsection_title', false],
-              [t('admin', 'body'),            'body',             true],
-              [t('admin', 'quotes'),          'quotes',           true],
-              [t('admin', 'questions'),       'questions',        true],
-            ].map(([label, key, isTA]) => (
+              [t('admin', 'sectionTitle'),    'section_title',    false, 1],
+              [t('admin', 'subsectionTitle'), 'subsection_title', false, 1],
+              [t('admin', 'body'),            'body',             true,  10],
+              [t('admin', 'quotes'),          'quotes',           true,  3],
+              [t('admin', 'questions'),       'questions',        true,  3],
+            ].map(([label, key, isTA, rows = 3]) => (
               <div key={key}>
                 <label style={lbl}>{label}</label>
                 {isTA
-                  ? <textarea value={s[key] ?? ''} onChange={e => upd(i, key, e.target.value)} onKeyDown={e => handleTab(e, s[key] ?? '', v => upd(i, key, v))} rows={3} style={{ ...inp, resize: 'vertical' }} />
+                  ? <textarea value={s[key] ?? ''} onChange={e => upd(i, key, e.target.value)} onKeyDown={e => handleTab(e, s[key] ?? '', v => upd(i, key, v))} rows={rows} style={{ ...inp, resize: 'vertical' }} />
                   : <input   value={s[key] ?? ''} onChange={e => upd(i, key, e.target.value)} style={inp} />
                 }
               </div>

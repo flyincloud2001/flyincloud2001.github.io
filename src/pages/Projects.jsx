@@ -2,6 +2,15 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useLang } from '../context/LangContext'
 
+function renderWithLinks(text) {
+  const parts = text.split(/(https?:\/\/[^\s]+)/)
+  return parts.map((part, i) =>
+    /^https?:\/\//.test(part)
+      ? <a key={i} href={part} target="_blank" rel="noopener noreferrer" style={{ color: '#6ea8fe', wordBreak: 'break-all' }}>{part}</a>
+      : part
+  )
+}
+
 export default function Projects() {
   const { t, lang } = useLang()
   const [projects, setProjects] = useState([])
@@ -37,11 +46,11 @@ function ProjectCard({ p }) {
   return (
     <div style={card}>
       <h3 style={{ margin: '0 0 0.5rem', fontSize: '1rem', color: '#fff', fontWeight: 600 }}>{title}</h3>
-      {desc && <p style={{ margin: '0 0 0.75rem', fontSize: '0.88rem', color: 'rgba(210,215,235,0.78)', lineHeight: 1.65 }}>{desc}</p>}
+      {desc && <p style={{ margin: '0 0 0.75rem', fontSize: '0.88rem', color: 'rgba(210,215,235,0.78)', lineHeight: 1.65, whiteSpace: 'pre-wrap' }}>{renderWithLinks(desc)}</p>}
       {p.url && (
         <a href={p.url} target="_blank" rel="noopener noreferrer"
-          style={{ fontSize: '0.82rem', color: '#6ea8fe', textDecoration: 'none' }}>
-          PDF →
+          style={{ fontSize: '0.82rem', color: '#6ea8fe', textDecoration: 'none', wordBreak: 'break-all' }}>
+          {p.url}
         </a>
       )}
     </div>

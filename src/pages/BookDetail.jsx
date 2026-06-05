@@ -3,6 +3,15 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useLang } from '../context/LangContext'
 
+function renderWithLinks(text) {
+  const parts = text.split(/(https?:\/\/[^\s]+)/)
+  return parts.map((part, i) =>
+    /^https?:\/\//.test(part)
+      ? <a key={i} href={part} target="_blank" rel="noopener noreferrer" style={{ color: '#6ea8fe', wordBreak: 'break-all' }}>{part}</a>
+      : part
+  )
+}
+
 export default function BookDetail() {
   const { id }      = useParams()
   const navigate    = useNavigate()
@@ -87,7 +96,7 @@ export default function BookDetail() {
       {book.core_concept && (
         <div style={{ marginBottom: '1.5rem' }}>
           <SectionLabel>{t('notes', 'coreConcept')}</SectionLabel>
-          <p style={bodyText}>{book.core_concept}</p>
+          <p style={bodyText}>{renderWithLinks(book.core_concept)}</p>
         </div>
       )}
 
@@ -95,7 +104,7 @@ export default function BookDetail() {
       {book.reason_to_read && (
         <div style={{ marginBottom: '1.5rem' }}>
           <SectionLabel>{t('notes', 'reasonToRead')}</SectionLabel>
-          <p style={bodyText}>{book.reason_to_read}</p>
+          <p style={bodyText}>{renderWithLinks(book.reason_to_read)}</p>
         </div>
       )}
 
@@ -114,14 +123,14 @@ export default function BookDetail() {
               {sec.quotes && (
                 <div style={{ marginTop: '1rem' }}>
                   <span style={inlineLabelStyle}>{t('notes', 'sectionQuotes')}</span>
-                  <blockquote style={quoteStyle}>{sec.quotes}</blockquote>
+                  <blockquote style={quoteStyle}>{renderWithLinks(sec.quotes)}</blockquote>
                 </div>
               )}
               {sec.questions && (
                 <div style={{ marginTop: '0.85rem' }}>
                   <span style={inlineLabelStyle}>{t('notes', 'sectionQuestions')}</span>
                   <p style={{ ...bodyText, color: 'rgba(200,210,235,0.6)', borderLeft: '2px solid rgba(200,210,235,0.15)', paddingLeft: '0.75rem', marginTop: '0.4rem' }}>
-                    {sec.questions}
+                    {renderWithLinks(sec.questions)}
                   </p>
                 </div>
               )}
@@ -194,7 +203,7 @@ function BodyParagraphs({ text }) {
     <div style={{ marginTop: '0.3rem' }}>
       {text.split('\n').map((line, i) =>
         line.trim()
-          ? <p key={i} style={{ ...bodyText, margin: '0 0 0.4rem' }}>{line}</p>
+          ? <p key={i} style={{ ...bodyText, margin: '0 0 0.4rem' }}>{renderWithLinks(line)}</p>
           : <div key={i} style={{ height: '0.5em' }} />
       )}
     </div>
