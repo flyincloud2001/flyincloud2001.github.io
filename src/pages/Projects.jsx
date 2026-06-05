@@ -20,6 +20,7 @@ export default function Projects() {
     supabase
       .from('projects')
       .select('*')
+      .eq('published', true)
       .order('created_at', { ascending: false })
       .then(({ data }) => { setProjects(data ?? []); setLoading(false) })
   }, [])

@@ -62,7 +62,7 @@ function ProjectsAdmin({ t }) {
     .then(({ data }) => setItems(data ?? []))
   useEffect(() => { load() }, [])
 
-  const blank = { title_zh: '', title_en: '', description_zh: '', description_en: '', url: '' }
+  const blank = { title_zh: '', title_en: '', description_zh: '', description_en: '', url: '', published: false }
 
   const save = async () => {
     setSaving(true)
@@ -72,6 +72,7 @@ function ProjectsAdmin({ t }) {
       description_zh: form.description_zh,
       description_en: form.description_en,
       url:            form.url,
+      published:      form.published ?? false,
     }
     if (form.id) await supabase.from('projects').update(payload).eq('id', form.id)
     else         await supabase.from('projects').insert(payload)
@@ -94,6 +95,7 @@ function ProjectsAdmin({ t }) {
       <TA label={t('admin', 'descZh')}   val={form?.description_zh} set={v => setForm(p => ({ ...p, description_zh: v }))} onKeyDown={e => handleTab(e, form?.description_zh ?? '', v => setForm(p => ({ ...p, description_zh: v })))} />
       <TA label={t('admin', 'descEn')}   val={form?.description_en} set={v => setForm(p => ({ ...p, description_en: v }))} onKeyDown={e => handleTab(e, form?.description_en ?? '', v => setForm(p => ({ ...p, description_en: v })))} />
       <TF label={t('admin', 'url')}      val={form?.url}            set={v => setForm(p => ({ ...p, url: v }))} />
+      <PublishedToggle val={form?.published ?? false} set={v => setForm(p => ({ ...p, published: v }))} t={t} />
     </CRUDPanel>
   )
 }
