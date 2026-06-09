@@ -88,7 +88,7 @@ function ProjectsAdmin({ t }) {
     <CRUDPanel
       items={items} form={form} setForm={setForm}
       blank={blank} save={save} del={del} saving={saving} t={t}
-      label={item => item.title}
+      label={item => item.title_zh || item.title_en}
     >
       <TF label={t('admin', 'titleZh')}  val={form?.title_zh}       set={v => setForm(p => ({ ...p, title_zh: v }))} />
       <TF label={t('admin', 'titleEn')}  val={form?.title_en}       set={v => setForm(p => ({ ...p, title_en: v }))} />
