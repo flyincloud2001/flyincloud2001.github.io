@@ -23,37 +23,24 @@ export default function About() {
   const subtitle = subtitles ? (subtitles[lang] ?? FALLBACK[lang]) : ''
 
   useEffect(() => {
-    if (!subtitle) return
     const el = subtitleRef.current
-    if (!el) return
+    if (!el || !subtitle) return
     el.textContent = ''
-    const obj = { n: 0 }
-    const tween = gsap.to(obj, {
-      n: subtitle.length,
-      duration: subtitle.length * 0.032,
-      ease: 'none',
-      onUpdate() {
-        el.textContent = subtitle.slice(0, Math.round(obj.n))
-      },
-      onComplete() {
-        el.textContent = ''
-        subtitle.split(/(https?:\/\/[^\s]+)/).forEach(part => {
-          if (/^https?:\/\//.test(part)) {
-            const a = document.createElement('a')
-            a.href = part
-            a.textContent = part
-            a.target = '_blank'
-            a.rel = 'noopener noreferrer'
-            a.style.color = '#6ea8fe'
-            a.style.wordBreak = 'break-all'
-            el.appendChild(a)
-          } else {
-            el.appendChild(document.createTextNode(part))
-          }
-        })
-      },
+    subtitle.split(/(https?:\/\/[^\s]+)/).forEach(part => {
+      if (/^https?:\/\//.test(part)) {
+        const a = document.createElement('a')
+        a.href = part
+        a.textContent = part
+        a.target = '_blank'
+        a.rel = 'noopener noreferrer'
+        a.style.color = '#6ea8fe'
+        el.appendChild(a)
+      } else {
+        el.appendChild(document.createTextNode(part))
+      }
     })
-    return () => tween.kill()
+    gsap.fromTo(el, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' })
+    return () => gsap.killTweensOf(el)
   }, [subtitle])
 
   return (
@@ -79,7 +66,6 @@ export default function About() {
           fontSize: 'clamp(0.95rem, 2.1vw, 1.12rem)',
           lineHeight: 1.85,
           color: 'rgba(230,236,255,0.92)',
-          maxWidth: '580px',
           margin: '0 0 1.1rem',
           textAlign: 'left',
           textShadow: '0 1px 10px rgba(0,0,0,0.75), 0 1px 2px rgba(0,0,0,0.85)',
